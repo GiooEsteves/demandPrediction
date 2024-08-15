@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 def build_features(df):
-    # Extração de informações temporais
+    # Certificar-se de que a coluna 'date' está no formato datetime
     df['date'] = pd.to_datetime(df['date'])
     df['day'] = df['date'].dt.day
     df['month'] = df['date'].dt.month
@@ -22,9 +22,11 @@ def build_features(df):
     return df
 
 if __name__ == "__main__":
-    # Carregar dados processados
+    # Caminho para os dados processados
     train_path = os.path.join('data', 'processed', 'train_clean.csv')
-    train_df = pd.read_csv(train_path)
+
+    # Carregar dados processados com low_memory=False
+    train_df = pd.read_csv(train_path, low_memory=False)
 
     # Construir novas features
     train_features_df = build_features(train_df)
