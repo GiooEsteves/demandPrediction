@@ -1,9 +1,9 @@
 import os
-from src.data.load_data import (
+from data.load_data import (
     load_holidays_data, load_oil_data, load_stores_data,
     load_transactions_data, load_train_data, load_test_data
 )
-from src.data.preprocess import clean_train_data
+from data.preprocess import clean_train_data
 
 def main():
     # Carregar os dados
