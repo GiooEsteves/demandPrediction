@@ -6,16 +6,20 @@ import joblib
 import os
 
 # Carregar as funções de preprocessamento e seleção de features
-from data.preprocess import clean_train_data
-from features.select_features import select_important_features
+from src.data.preprocess import clean_train_data
+from src.features.build_features import build_features
+from src.features.select_features import select_important_features
 
 def train_model(train_df, oil_df, holidays_df, transactions_df):
     # Limpeza e preprocessamento dos dados
     train_clean_df = clean_train_data(train_df, oil_df, holidays_df, transactions_df)
-
+    
+    # Construir novas features
+    train_features_df = build_features(train_clean_df)
+    
     # Seleção de features importantes
     target = 'sales'
-    train_selected_df = select_important_features(train_clean_df, target)
+    train_selected_df = select_important_features(train_features_df, target)
 
     # Separar features e target
     X = train_selected_df.drop(columns=[target])

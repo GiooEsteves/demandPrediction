@@ -22,7 +22,7 @@ if __name__ == "__main__":
     # Caminho para o modelo treinado
     model_path = os.path.join('src', 'models', 'demand_forecasting_model.pkl')
     
-    # Caminho para os dados processados
+    # Caminho para os dados de teste
     test_path = os.path.join('data', 'processed', 'test_clean.csv')
 
     # Carregar o modelo treinado
@@ -32,9 +32,17 @@ if __name__ == "__main__":
     # Carregar os dados de teste
     test_df = pd.read_csv(test_path)
     
+    # Construir novas features e selecionar as features importantes
+    from src.features.build_features import build_features
+    from src.features.select_features import select_important_features
+
+    test_features_df = build_features(test_df)
+    target = 'sales'
+    test_selected_df = select_important_features(test_features_df, target)
+
     # Separar features e target
-    X_test = test_df.drop(columns=['sales'])
-    y_test = test_df['sales']
+    X_test = test_selected_df.drop(columns=[target])
+    y_test = test_selected_df[target]
 
     # Avaliar o modelo
     evaluate_model(model, X_test, y_test)
